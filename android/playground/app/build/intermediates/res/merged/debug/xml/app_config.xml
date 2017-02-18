@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<app_config version="1">
+    <bool name="launch_locally">false</bool>
+    <string name="launch_url">http://192.168.1.126:8080/dist/index.js</string>
+    <!--<string name="launch_url">http://192.168.1.126:8080/dist/index.js</string>-->
+    <string name="local_url">file://assets/dist/index.js</string>
+
+    <component name="richtext">com.alibaba.weex.extend.component.RichText</component>
+
+    <module name="render">com.alibaba.weex.extend.module.RenderModule</module>
+    <module name="event">com.alibaba.weex.extend.module.WXEventModule</module>
+    <module name="myModule">com.alibaba.weex.extend.module.MyModule</module>
+    <module name="device">com.alibaba.weex.extend.module.DeviceModule</module>
+
+     <module name="fileinput">com.alibaba.weex.FileInput</module>
+      <module name="fileupload">com.alibaba.weex.FileUpload</module>
+</app_config>

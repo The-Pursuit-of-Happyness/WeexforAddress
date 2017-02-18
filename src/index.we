@@ -1,0 +1,27 @@
+<template>
+  <div>
+    <text class="message">{{ message }}</text>
+  </div>
+</template>
+
+<style>
+  .message {
+    font-size: 70
+  }
+</style>
+
+<script>
+var utils = require("./utils/utils");
+
+  module.exports = {
+    data: {
+      message: 'Hello, Weex!'
+    },
+    created: function() {
+       var bundleUrl = this.$getConfig().bundleUrl;
+       var base =  utils.getBaseUrl(bundleUrl);
+       console.log("base"+base);
+       this.$openURL(base + "addresstest.js");
+    },
+  }
+</script>

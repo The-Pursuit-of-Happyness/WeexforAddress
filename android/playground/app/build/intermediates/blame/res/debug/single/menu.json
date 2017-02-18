@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\workspace\\github\\weextest\\android\\playground\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main_scan.xml",
+        "source": "D:\\workspace\\github\\weextest\\android\\playground\\app\\src\\main\\res\\menu\\main_scan.xml"
+    },
+    {
+        "merged": "D:\\workspace\\github\\weextest\\android\\playground\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main.xml",
+        "source": "D:\\workspace\\github\\weextest\\android\\playground\\app\\src\\main\\res\\menu\\main.xml"
+    }
+]

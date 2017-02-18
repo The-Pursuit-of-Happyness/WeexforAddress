@@ -1,0 +1,209 @@
+<template>
+  <!-- show address picker -->
+   <div class="mask" onclick= "closeaddresspage"  if="{{showaddress}}">
+   <div class ="title">
+        <text class ="selectbutton" onclick="cancle">取消</text>
+        <text class ="selectbutton" onclick ="sure">确定</text>
+   </div>
+    <div class ="addresslist">
+        <scroller show-scrollbar="false" >
+            <div  class = "addresslistitem">
+                <list repeat="item in provices">
+                    <cell  onclick="selectprovice"><text class ="itemstyle"  style="color:{{item.color}};">{{item.provice}}</text></cell>
+                </list>
+            </div>
+        </scroller>
+
+        <scroller show-scrollbar="false" > 
+            <div  class = "addresslistitem">
+                <list  repeat="item in cities">
+                    <cell onclick="selectcity"><text class ="itemstyle" style="color:{{item.color}};">{{item.city}}</text></cell>
+                </list>
+            </div>
+        </scroller>
+
+        <scroller show-scrollbar="false" > 
+            <div  class = "addresslistitem">
+                <list class  ="addresslistitem" repeat="item in areas"  >
+                    <cell onclick="selectarea"><text class ="itemstyle" style ="color:{{item.color}};">{{item.area}}</text></cell>
+                </list>
+            </div>
+        </scroller>
+
+        </div>
+        <div class ="footer"></div>
+    </div>
+</template>
+
+<script>
+  var addressmap = require("./utils/area");
+  require('weex-components');
+  module.exports = {
+    data: {
+        showaddress:true,
+        proviceindex:0,
+        cityindex:0,
+        areaindex:0,
+        provice:"北京",
+        city:"北京市",
+        area:"东城区",
+        street:"东直门东方银座23D",
+        provices:["北京"],
+        cities:["市辖区"],
+        areas:["东城区"],
+    },
+    ready:function(){       
+        this.provices = [];
+        var tempprovices = addressmap.address.Items["0"];
+        var index = 0;
+        for(var provice in  addressmap.address.Items["0"]){            
+            var tempprovice = {};
+            tempprovice.index = index;
+            tempprovice.color = "black";
+            tempprovice.provice = addressmap.address.Items["0"][provice];
+            this.provices.push(tempprovice);
+            index++;
+        }
+        this.cities = [{city:"请选择"}];
+        this.areas = [{area:"请选择"}];
+    },
+     methods: {
+         /*select provice*/
+         selectprovice:function(e){
+              this.provice = e.target.children[0].attr.value;
+              console.log(this.provice);
+              for(var provice of this.provices){
+                  if(provice.provice == this.provice){
+                      this.proviceindex = provice.index;
+                      provice.color = "red";
+                  }else{
+                       provice.color = "black";
+                  }
+              }
+              //this.proviceindex = this.provices.indexOf(this.provice);
+              //console.log(this.provices.indexOf(this.provice));
+              var citynum = "0_"+ this.proviceindex;
+              this.cities = [];
+              //this.cities = addressmap.address.Items[city];
+              var index = 0;
+              for(var city in addressmap.address.Items[citynum]){            
+                  var tempcity = {};
+                  tempcity.index = index;
+                  tempcity.color = "black";
+                  //console.log(addressmap.address.Items[citynum][city]);
+                  tempcity.city = addressmap.address.Items[citynum][city];
+                  this.cities.push(tempcity);
+                  index++;
+              }
+               this.areas = [{area:"请选择"}];
+         },
+          selectcity:function(e){
+              this.city = e.target.children[0].attr.value;
+              console.log(this.city);
+              for(var city of this.cities){
+                  if(city.city == this.city){
+                      this.cityindex = city.index;
+                      city.color = "red";
+                  }else{
+                       city.color = "black";
+                  }
+              } 
+              //this.cityindex = this.cities.indexOf(this.city);
+              //console.log(this.cities.indexOf(this.city));
+              var areanum = "0_"+ this.proviceindex+"_"+ this.cityindex;
+              this.areas = [];
+               var index = 0;
+              for(var area in addressmap.address.Items[areanum]){         
+                  var temparea = {};
+                  temparea.index = index;
+                  temparea.color = "black";
+                  //console.log(addressmap.address.Items[areanum][area]);
+                  temparea.area = addressmap.address.Items[areanum][area];
+                  this.areas.push(temparea);
+                  index++;
+              }
+         },
+          selectarea:function(e){
+              this.area = e.target.children[0].attr.value;
+              console.log(this.area);
+              for(var area of this.areas){
+                  if(area.area == this.area){
+                      this.areaindex = area.index;
+                      area.color = "red";
+                  }else{
+                       area.color = "black";
+                  }
+              }
+              //this.areaindex = this.areas.indexOf(this.area);
+              //console.log(this.areas.indexOf(this.area));
+         },
+         cancle:function(){
+             this.showaddress = false;
+             this.provice = "北京";
+             this.provice = "市辖区";
+             this.area = "东城区";
+             this.$dispatch('selected', {issave: false,provice: this.provice,city: this.city,area: this.area});
+         },
+         sure:function(){
+             this.showaddress = false;
+             this.$dispatch('selected', {issave: true,provice: this.provice,city: this.city,area: this.area});
+         },
+      },
+  }
+</script>
+
+<style>
+.title{
+    justify-content:space-between;
+    align-items:center;
+    flex-direction:row;
+    background-color:#01cdff;
+    height:80px;
+    padding-left:20px;
+    padding-right:20px;
+}
+.selectbutton{
+    font-size:30px;
+    width:100px;
+    height:60px;
+    line-height:60px;
+    margin:5px;
+    text-align:center;
+    background-color:#fecd01;
+    border-radius:5px;
+}
+.mask{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:740px;  
+  }
+  .itemstyle{
+      font-size:40px;
+      margin:10px;
+      line-height:30px;
+      color:black;
+      text-align:center;
+  }
+  .addresslist{
+      padding-top:20px;
+      padding-bottom:20px;
+      flex-direction:row;
+      height:600px;
+      background-color:white;
+  }
+  .addresslistitem{
+      flex-direction:column;
+  }
+  .addressinput{
+      width:400px;
+      height:40px;
+      font-size:30px;
+      border-width:1px;
+  }
+  .footer{
+    background-color:#01cdff;
+    height:60px;
+  }
+</style>

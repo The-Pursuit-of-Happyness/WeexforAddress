@@ -1,0 +1,78 @@
+<template>
+<div>   
+     
+    <div class="inputitem">
+        <text class="checkitemname" >选择地点</text>
+        <text class="space addressinput" onclick = "{{showaddresspicker}}">{{provice}}/{{city}}/{{area}}</text>
+    </div>     
+
+  <div class="mask" if="{{showpicker}}">
+        <selectaddress></selectaddress>
+  </div>  
+</div>
+</template>
+
+<script>
+var addressmap = require("./utils/area");
+var utils = require("./utils/utils");
+require("./selectaddress.we");
+ require('weex-components');
+  module.exports = {
+    data: {
+        proviceindex:0,
+        cityindex:0,
+        areaindex:0,
+        provice:"北京",
+        city:"北京市",
+        area:"东城区",               
+
+        showpicker:false,
+    },
+    ready:function(){       
+    },
+     methods: {
+        showaddresspicker:function(){
+            this.showpicker = true;
+            console.log(this.showpicker);
+            this.$on('selected', function (e){
+                if(e.detail.issave){
+                    this.provice = e.detail.provice;
+                    this.city = e.detail.city;
+                    this.area = e.detail.area;
+                }               
+                this.showpicker = false;
+            });          
+        },
+      },
+  }
+</script>
+
+<style>
+    .inputitem{
+         flex-direction:row;
+    }        
+    .checkitemname{
+        font-size:30px;
+        width:200px;
+    }     
+    .space{
+        margin-left:20px;
+    }
+     .mask{
+      position:absolute;
+      left:0;
+      top:0;
+      right:0;
+      bottom:0;
+      background-color:#999999;
+      justify-content:center;
+      align-items:center;
+  }
+  
+  .addressinput{
+      width:400px;
+      height:40px;
+      font-size:30px;
+      border-width:1px;
+  }
+</style>
